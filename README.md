@@ -9,20 +9,20 @@ Locally I have a git ignored folder called Libraries where I've been adding othe
 If I miss a reference, it's likely something from there.
 Like so:
 
-UELOVR/
-├── Libraries/  <--
-│   └── lovr-mouse.lua
-├── TestGame/
-│   └── etc.
-├── UELOVR/
-│   └── etc.
-├── .gitignore
-├── conf.lua
-├── globals.lua
-├── launch.ps1
-├── LICENSE
-├── main.lua
-├── notes.txt
-└── README.md
+UELOVR/ <br />
+├── Libraries/  <-- <br />
+│   └── lovr-mouse.lua <br />
+├── TestGame/ <br />
+│   └── etc. <br />
+├── UELOVR/ <br />
+│   └── etc. <br />
+├── .gitignore <br />
+├── conf.lua <br />
+├── globals.lua <br />
+├── launch.ps1 <br />
+├── LICENSE <br />
+├── main.lua <br />
+├── notes.txt <br />
+└── README.md <br />
 
 I might try to set up some sort of auto detection system for other libraries or submodules.
