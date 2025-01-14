@@ -1,5 +1,5 @@
 $EnginePath = 'B:\Engines\lovr\build\Debug'
-$ProjectPath = 'D:\Projects\Experimenting\LOVRTest'
+$ProjectPath = $PSScriptRoot
 
 Write-Host "Launching Project"
 
