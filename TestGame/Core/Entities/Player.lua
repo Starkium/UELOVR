@@ -25,8 +25,8 @@ function Player:new()
 end
 
 function Player:initialize()
-   -- self.camera.position:set(0, 1000, 0) -- Starting position
-   --lovr.mouse.setRelativeMode(true)
+   self.camera.position:set(0, 10, 0) -- Starting position
+   lovr.mouse.setRelativeMode(true)
 end
 
 function Player:update(dt)

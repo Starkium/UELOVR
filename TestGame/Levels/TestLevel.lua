@@ -4,15 +4,10 @@ local TestLevel = UELOVR.Level:extend()
 
 local Terrain = require('TestGame.Terrain')
 
---function TestLevel:new()
---  self:super("new")
---  self.grid = self:SetUpGrid()
---end
-
-
 function TestLevel:initialize(...)
   self:super("initialize", ...) -- Call the base class's initialize method
-  self.terrain = Terrain:new(64)
+  self.terrain = Terrain:new()
+  self.terrain:initialize(64)
   --self:addEntity(self.terrain) -- don't need this since we manually update
   --self.grid = self:SetUpGrid()
   self.shader = lovr.graphics.newShader([[

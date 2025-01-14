@@ -13,6 +13,8 @@ function CustomWorld:initialize(...)
     self.currentLevel = TestLevel:new()
     self.currentLevel:initialize() -- because it's not in the entities list, perhaps make a section for levels
     self.player = self:addEntity(Player:new())
+    skyColor = {0.529, 0.808, 0.922}
+    lovr.graphics.setBackgroundColor(skyColor)
    
 end
 

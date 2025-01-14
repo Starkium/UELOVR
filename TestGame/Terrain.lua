@@ -4,29 +4,35 @@ local UELOVR = require('UELOVR')
 local Terrain = UELOVR.BaseClass:extend()
 local TerrainMaterial = require('TestGame.MaterialsLibrary.TerrainMaterial')
 
-function Terrain:new(size, scale)
-    local instance = {
-        size = size or 64,
-        scale = scale or { x = 1, y = 1, z = 1 },
-        mesh = nil,
-        material = TerrainMaterial:new()
-    }
-    setmetatable(instance, self)
-    self.__index = self
 
-    if not instance.material then
+
+function Terrain:initialize(size, scale)
+    self.size = size or 64
+    self.scale = scale or { x = 1, y = 1, z = 1 }
+
+    self.material = TerrainMaterial:new()
+    if not self.material then
         error("Material creation failed!")
     end
 
     print("Generating terrain mesh...")
-    instance:generateMesh()
-
-    if not instance.mesh then
+    self.mesh = self:generateMesh()
+    if not self.mesh then
         error("Mesh generation failed!")
     end
 
     print("Terrain initialized successfully.")
-    return instance
+end
+
+
+function Terrain:draw(pass)
+    if self.mesh and self.material then
+        self.material:apply(pass)
+        if pass then pass:draw(self.mesh) else print("Warning: No pass provided to Terrain:draw()") end
+        --self.material:reset(pass)
+    else
+        print("Cannot draw terrain: Mesh or material is missing!")
+    end
 end
 
 function Terrain:generateMesh()
@@ -34,6 +40,7 @@ function Terrain:generateMesh()
     local scale = self.scale
     local vertices = {}
     local indices = {}
+    local mesh = nil
 
     for z = 1, size do
         for x = 1, size do
@@ -54,19 +61,10 @@ function Terrain:generateMesh()
         end
     end
 
-    self.mesh = lovr.graphics.newMesh({ { 'VertexPosition', 'vec3' } }, vertices)
-    self.mesh:setIndices(indices)
+    mesh = lovr.graphics.newMesh({ { 'VertexPosition', 'vec3' } }, vertices)
+    mesh:setIndices(indices)
     print("Mesh generated with", #vertices, "vertices and", #indices, "indices.")
-end
-
-function Terrain:draw(pass)
-    if self.mesh and self.material then
-        self.material:apply(pass)
-        if pass then pass:draw(self.mesh) else print("Warning: No pass provided to Terrain:draw()") end
-        self.material:reset(pass)
-    else
-        print("Cannot draw terrain: Mesh or material is missing!")
-    end
+    return mesh
 end
 
 return Terrain
