@@ -51,19 +51,19 @@ end
 
 function TestLevel:draw(pass)
   self:super("draw", pass)
+
+
     if self.terrain then
-        self.terrain:draw(pass)
+      self.terrain:draw(pass)
     end
-    --if self.grid then
-        pass:setShader(self.shader)
-        pass:send('lineWidth', .005)
-        pass:send('background', { .05, .05, .05 })
-        pass:send('foreground', { .5, .5, .5 })
-        pass:plane(0, 0, 0, 200, 200, -math.pi / 2, 1, 0, 0)
-        --print("Drawing Grid manually")
-        --pass:setShader(nil)
-    --end
-    --print("Test Level Drawing")
+
+    pass:setShader(self.shader)
+    pass:send('lineWidth', .005)
+    pass:send('background', { .05, .05, .05 })
+    pass:send('foreground', { .5, .5, .5 })
+    pass:plane(0, 0, 0, 200, 200, -math.pi / 2, 1, 0, 0)
+
+
 end
 
 function TestLevel:SetUpGrid()
