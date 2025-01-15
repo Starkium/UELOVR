@@ -1,10 +1,10 @@
 -- Core/GameMode.lua
-local BaseClass = require('UELOVR.BaseClass')
-local GameMode = BaseClass:extend()
+local Actor = require('UELOVR.GameFramework.Actor')
+local GameMode = Actor:extend()
 
 function GameMode:initialize()
     -- Create and initialize the GameState
-    self.gameState = require('UELOVR.GameState'):new()
+    self.gameState = require('UELOVR.GameFramework.GameState'):new()
     self.gameState:initialize()
 end
 

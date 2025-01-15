@@ -1,5 +1,5 @@
 -- UELOVR/Level.lua
-local BaseClass = require('UELOVR.BaseClass')
+local BaseClass = require('UELOVR.CoreObject.BaseClass')
 local Level = BaseClass:extend()
 
 function Level:initialize(...)

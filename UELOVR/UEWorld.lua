@@ -1,5 +1,5 @@
 -- UELOVR/UEWorld.lua
-local BaseClass = require('UELOVR.BaseClass')
+local BaseClass = require('UELOVR.CoreObject.BaseClass')
 local UEWorld = BaseClass:extend()
 
 function UEWorld:initialize(...)

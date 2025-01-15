@@ -1,11 +1,11 @@
 -- UELOVR/GameInstance.lua
-local BaseClass = require('UELOVR.BaseClass')
+local BaseClass = require('UELOVR.CoreObject.BaseClass')
 local GameInstance = BaseClass:extend()
 
 function GameInstance:initialize(...)
     print("GameInstance initialized - GUID: " .. self.guid)
     -- Create and initialize the GameMode
-    self.currentGameMode = require('UELOVR.GameMode'):new()
+    self.currentGameMode = require('UELOVR.GameFramework.GameMode'):new()
 end
 
 function GameInstance:update(dt)

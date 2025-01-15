@@ -1,7 +1,6 @@
 -- UELOVR/CustomGameInstance.lua
-require('UELOVR')
-local GameInstance = require('UELOVR.GameInstance')
-local CustomGameInstance = GameInstance:extend()
+local UELOVR = require('UELOVR')
+local CustomGameInstance = UELOVR.GameInstance:extend()
 
 --local PlayerController = require('TestGame.CustomPlayerController')
 

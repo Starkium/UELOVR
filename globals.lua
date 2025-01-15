@@ -1,3 +1,3 @@
 
-local UELOVR = require('UELOVR')
+--local UELOVR = require('UELOVR')
 package.loaded[ ... ] = "globals"

@@ -1,6 +1,6 @@
 -- UELOVR/PlayerController.lua
-local BaseClass = require('UELOVR.BaseClass')
-local PlayerController = BaseClass:extend()
+local Controller = require('UELOVR.GameFramework.Controller')
+local PlayerController = Controller:extend()
 
 function PlayerController:initialize()
     self.pawn = nil

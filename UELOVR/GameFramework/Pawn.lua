@@ -1,6 +1,6 @@
 -- UELOVR/Pawn.lua
-local BaseClass = require('UELOVR.BaseClass')
-local Pawn = BaseClass:extend()
+local Actor = require('UELOVR.GameFramework.Actor')
+local Pawn = Actor:extend()
 
 function Pawn:initialize(...)
     self:super("initialize", ...)
