@@ -1,13 +1,16 @@
 -- TestGame/Levels/TestLevel.lua
 local UELOVR = require('UELOVR')
 local TestLevel = UELOVR.Level:extend()
+TestLevel.typeName = "TestLevel"
 
 local Terrain = require('TestGame.Terrain')
 
 function TestLevel:initialize(...)
   self:super("initialize", ...) -- Call the base class's initialize method
   self.terrain = Terrain:new()
+  self.terrain:SetOuter(self)
   self.terrain:initialize(64)
+
   --self:addEntity(self.terrain) -- don't need this since we manually update
   --self.grid = self:SetUpGrid()
   self.shader = lovr.graphics.newShader([[
@@ -51,8 +54,6 @@ end
 
 function TestLevel:draw(pass)
   self:super("draw", pass)
-
-
     if self.terrain then
       self.terrain:draw(pass)
     end
@@ -62,8 +63,6 @@ function TestLevel:draw(pass)
     pass:send('background', { .05, .05, .05 })
     pass:send('foreground', { .5, .5, .5 })
     pass:plane(0, 0, 0, 200, 200, -math.pi / 2, 1, 0, 0)
-
-
 end
 
 function TestLevel:SetUpGrid()

@@ -1,31 +1,56 @@
 -- UELOVR/Terrain.lua
 local UELOVR = require('UELOVR')
 local Terrain = UELOVR.Actor:extend()
-local TerrainMaterial = require('TestGame.MaterialsLibrary.TerrainMaterial')
+Terrain.typeName = "Terrain"
 
 
 
-function Terrain:initialize(size, scale)
+local function grid(size, subdivisions)
+    local vertices = {}
+    local indices  = {}
+    local step = size / (subdivisions - 1)
+    for z = -size / 2, size / 2, step do
+      for x = -size / 2, size / 2, step do
+        table.insert(vertices, {x, 0, z})
+        table.insert(vertices, {x, 0, z + step})
+        table.insert(vertices, {x + step, 0, z})
+        table.insert(vertices, {x, 0, z + step})
+        table.insert(vertices, {x + step, 0, z + step})
+        table.insert(vertices, {x + step, 0, z})
+      end
+    end
+    return vertices
+end
+
+local function terrain_fn(x, z)
+    return 4 * (lovr.math.noise(x * 0.05, z * 0.05) - 0.5)
+end
+
+-- Haven't confirmed, but the order in which you write stuff seems to matter for local functions
+
+
+function Terrain:initialize(size)
     self.size = size or 50
-    self.scale = scale or { x = 1, y = 1, z = 1 }
 
-    self.material = TerrainMaterial:new()
+    self.material = require('TestGame.MaterialsLibrary.TerrainMaterial'):new()
     if not self.material then
         error("Material creation failed!")
+        return
     end
 
     print("Generating terrain mesh...")
-    self.vertices, self.indices = Grid(size, 100)
+    self.vertices, self.indices = grid(size, 100)
     for vi = 1, #self.vertices do
         local x,y,z = unpack(self.vertices[vi])
-        self.vertices[vi][2] = Terrain_fn(x, z) -- elevate grid to terrain height
+        self.vertices[vi][2] = terrain_fn(x, z) -- elevate grid to terrain height
     end
     self.mesh = lovr.graphics.newMesh(self.vertices)
     if not self.mesh then
         error("Mesh generation failed!")
+        return
     end
-    -- need to pipe world down the chain 
-    --PhysicsWorld:newTerrainCollider(size, terrain_fn) -- use callback to define elevations
+
+    self:GetWorld().physicsWorld:newTerrainCollider(self.size, terrain_fn) -- use callback to define elevations
 
     print("Terrain initialized successfully.")
 end
@@ -43,59 +68,6 @@ function Terrain:draw(pass)
     else
         print("Cannot draw terrain: Mesh or material is missing!")
     end
-end
-
-function Terrain:generateMesh()
-    local size = self.size
-    local scale = self.scale
-    local vertices = {}
-    local indices = {}
-    local mesh = nil
-
-    for z = 1, size do
-        for x = 1, size do
-            local y = lovr.math.noise(x / size, z / size) * scale.y
-            table.insert(vertices, { (x - size / 2) * scale.x, y, (z - size / 2) * scale.z })
-        end
-    end
-
-    for z = 1, size - 1 do
-        for x = 1, size - 1 do
-            local i = (z - 1) * size + x
-            table.insert(indices, i)
-            table.insert(indices, i + 1)
-            table.insert(indices, i + size)
-            table.insert(indices, i + 1)
-            table.insert(indices, i + size + 1)
-            table.insert(indices, i + size)
-        end
-    end
-
-    mesh = lovr.graphics.newMesh({ { 'VertexPosition', 'vec3' } }, vertices)
-    mesh:setIndices(indices)
-    print("Mesh generated with", #vertices, "vertices and", #indices, "indices.")
-    return mesh
-end
-
-function Grid(size, subdivisions)
-    local vertices = {}
-    local indices  = {}
-    local step = size / (subdivisions - 1)
-    for z = -size / 2, size / 2, step do
-      for x = -size / 2, size / 2, step do
-        table.insert(vertices, {x, 0, z})
-        table.insert(vertices, {x, 0, z + step})
-        table.insert(vertices, {x + step, 0, z})
-        table.insert(vertices, {x, 0, z + step})
-        table.insert(vertices, {x + step, 0, z + step})
-        table.insert(vertices, {x + step, 0, z})
-      end
-    end
-    return vertices
-end
-
-function Terrain_fn(x, z)
-    return 4 * (lovr.math.noise(x * 0.05, z * 0.05) - 0.5)
 end
 
 return Terrain
