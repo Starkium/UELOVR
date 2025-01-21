@@ -1,11 +1,17 @@
 -- UELOVR/Actor.lua
 local BaseClass = require('UELOVR.CoreObject.BaseClass')
+local Math = require('UELOVR.Core.Math.Math')
 local Actor = BaseClass:extend()
 Actor.typeName = "Actor"
 
+local Transform = Math.Transform
+
+--- really need to figure out how to continue to use new() as intended.
+--- this would solve the typical problem "uobjects" have with constructors
 function Actor:new(...)
     local obj = BaseClass.new(self, ...)
     obj.hasBegunPlay = false -- Track BeginPlay state
+    obj.transform = Transform:new()
     return obj
 end
 
@@ -39,6 +45,10 @@ end
 
 function Actor:draw(pass)
     self:super("draw", pass) -- Call parent draw if necessary
+    lovr.graphics.push()
+    lovr.graphics.transform(self.transform:mat4())
+    -- Add custom draw logic here
+    lovr.graphics.pop()
 end
 
 return Actor
